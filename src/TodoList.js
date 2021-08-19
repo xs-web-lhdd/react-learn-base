@@ -26,6 +26,13 @@ class TodoList extends Component {
       })
     }
   }
+  handleItemClick(index) {
+    const list = [...this.state.list]
+    list.splice(index, 1)
+    this.setState({
+      list: list
+    })
+  }
 
   render() {
     return (
@@ -38,9 +45,16 @@ class TodoList extends Component {
           onKeyUp={this.handleKeyUp.bind(this)}
         />
         <ul>
-          {this.state.list.map((value, index) => {
+          {this.state.list.map((value, index) => { // map记得要return
             // 循环要加key值，会让React性能更高
-            return <li key={index}>{value}</li>
+            return (
+              <li 
+                key={index} 
+                onClick={this.handleItemClick.bind(this, index)}
+              >
+                {value}
+              </li>
+            )
           })}
         </ul>
       </Fragment>
