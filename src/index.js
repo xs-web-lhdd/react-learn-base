@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './App';
-import Test from './Test' // 引入第一个组件
+// import App from './App';
+import TodoList from './TodoList' // 引入组件
 
 
 ReactDOM.render(
     <div>
-      <App />
-      <Test />
+      <TodoList/>
     </div>,
   document.getElementById('root')
 );
