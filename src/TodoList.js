@@ -1,5 +1,6 @@
 import { Component, Fragment } from "react";
 import './style.css'
+import TodoItem from "./TodoItem";
 
 class TodoList extends Component {
   // 数据驱动
@@ -8,7 +9,7 @@ class TodoList extends Component {
     // bind(this)性能优化
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleKeyUp = this.handleKeyUp.bind(this)
-
+    this.handleItemClick = this.handleItemClick.bind(this)
     // React中定义的数据要放在this.state中这是固定写法
     this.state = {
       inputValue: '',
@@ -27,7 +28,8 @@ class TodoList extends Component {
     if (e.keyCode === 13 && e.target.value !== '') {
       const list = [...this.state.list, this.state.inputValue]
       this.setState({
-        list: list
+        list: list,
+        inputValue: ''
       })
     }
   }
@@ -41,14 +43,13 @@ class TodoList extends Component {
 
   getListItems() {
     return this.state.list.map((value, index) => { // map记得要return
-      // 循环要加key值，会让React性能更高
       return (
-        <li
-          key={index} 
-          onClick={this.handleItemClick.bind(this, index)}
-          dangerouslySetInnerHTML={{__html: value}}
-        >
-        </li>
+        <TodoItem
+          content={value}
+          key={index}
+          index={index}
+          deleteFunction={this.handleItemClick}
+        />
       )
     })
   }
