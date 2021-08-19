@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// import App from './App';
-import TodoList from './TodoList' // 引入组件
+import Counter from './counter'
 
 
 ReactDOM.render(
     <div>
-      <TodoList/>
+      <Counter />
     </div>,
   document.getElementById('root')
 );
