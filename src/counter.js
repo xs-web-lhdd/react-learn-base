@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react'
-import Child from './child'
 
 class Counter extends Component {
 
@@ -11,10 +10,21 @@ class Counter extends Component {
   }
 
   handleButtonClick() {
-    console.log(this.buttonElem);
     const newCounter = this.state.counter + 1
-    this.setState({
-      counter: newCounter
+    // console.log(this.divElem.innerHTML);
+    // setState是异步的
+    // this.setState({
+    //   counter: newCounter
+    // })
+    // console.log(this.divElem.innerHTML);
+
+// 可以让setState里面写函数，第二个函数是等第一个函数执行完才会执行 
+    this.setState(() => {
+      return {
+        counter: newCounter
+      }
+    }, () => {
+      console.log(this.divElem.innerHTML);
     })
   }
 
@@ -34,10 +44,11 @@ class Counter extends Component {
         >
         增加
         </button>
-        <Child
-          number={this.state.counter}
-          ref={(child) => {this.buttonElem = child}}
-        />
+        <div
+          ref={(div) => {this.divElem = div}}
+        >
+          {this.state.counter}
+        </div>
       </Fragment>
     )
   }
