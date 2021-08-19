@@ -7,7 +7,7 @@ class TodoList extends Component {
     // React中定义的数据要放在this.state中这是固定写法
     this.state = {
       inputValue: 'Hello World',
-      list: []
+      list: ['learn React', 'learn Component', 'learn React Dom']
     }
   }
 
@@ -18,6 +18,14 @@ class TodoList extends Component {
       inputValue: e.target.value
     })
   }
+  handleKeyUp(e) {
+    if (e.keyCode === 13) {
+      const list = [...this.state.list, this.state.inputValue]
+      this.setState({
+        list: list
+      })
+    }
+  }
 
   render() {
     return (
@@ -27,10 +35,13 @@ class TodoList extends Component {
           value={this.state.inputValue}
           // 通过bind改变this的指向
           onChange={this.handleInputChange.bind(this)}
+          onKeyUp={this.handleKeyUp.bind(this)}
         />
         <ul>
-          <li>learn React</li>
-          <li>learn Component</li>
+          {this.state.list.map((value, index) => {
+            // 循环要加key值，会让React性能更高
+            return <li key={index}>{value}</li>
+          })}
         </ul>
       </Fragment>
     );
