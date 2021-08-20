@@ -1,13 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react';
+import ReactDom from 'react-dom';
+import { Layout } from 'antd';
+import AppHeader from './components/Header/';
+import 'antd/dist/antd.css';
+import './style.css';
 
-import Counter from './counter'
+const { Header, Footer, Content } = Layout;
+
+class App extends Component {
+	render() {
+		return (
+			<Layout style={{ minWidth: 1300 }}>
+	      <Header className="header">
+	      	<AppHeader />
+	      </Header>
+	      <Content className="content">Content</Content>
+	      <Footer className="footer">Footer</Footer>
+    	</Layout>
+		)
+	}
+}
 
 
-ReactDOM.render(
-    <div>
-      <Counter />
-    </div>,
-  document.getElementById('root')
-);
-
+ReactDom.render(<App />, document.getElementById('root'));
