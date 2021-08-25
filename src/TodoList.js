@@ -51,6 +51,19 @@ class TodoList extends Component {
     // store.dispatch(action)
   }
 
+  getTodoList = () => {
+    return (dispatch) => {
+      // 获取数据
+      axios.get('https://www.fastmock.site/mock/9bb3d7842201f4a8971a5d62847340bb/api/list').then((res) => {
+        if (res.data.code === 200) {
+          const data = res.data.data
+          const action = this.initListAction(data)
+          dispatch(action)
+        }
+      })
+    }
+  }
+
   render () {
     return (
       <TodoListUI
@@ -64,13 +77,15 @@ class TodoList extends Component {
   }
 
   componentDidMount () {
-    axios.get('https://www.fastmock.site/mock/9bb3d7842201f4a8971a5d62847340bb/api/list').then((res) => {
-      if (res.data.code === 200) {
-        const data = res.data.data
-        const action = this.initListAction(data)
-        store.dispatch(action)
-      }
-    })
+    // axios.get('https://www.fastmock.site/mock/9bb3d7842201f4a8971a5d62847340bb/api/list').then((res) => {
+    //   if (res.data.code === 200) {
+    //     const data = res.data.data
+    //     const action = this.initListAction(data)
+    //     store.dispatch(action)
+    //   }
+    // })
+    const action = this.getTodoList()
+    store.dispatch(action)
   }
 }
 
