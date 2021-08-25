@@ -1,66 +1,46 @@
 import React, { Component } from 'react'
 import 'antd/dist/antd.css'
 import store from './store/index'
-import { CHNAGE_INPUT_VALUE, ADD_TODO_ITEM, DELETE_TPDO_ITEM, Init_List_Action } from './store/actionTypes'
+import { GET_INIT_LIST } from './store/actionTypes'
 import TodoListUI from './TodoListUI';
-import axios from 'axios'
+import { actionCreate } from './store/actionCreate'
 
 class TodoList extends Component {
+  
   constructor(props) {
     super(props)
+    const { handleInputChange, handleButtonClick, handleItemDelete } = actionCreate()
     this.state = store.getState()
-    this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleInputChange = handleInputChange.bind(this)
     this.handleStoreChange = this.handleStoreChange.bind(this)
-    this.handleButtonClick = this.handleButtonClick.bind(this)
-    this.handleItemDelete = this.handleItemDelete.bind(this)
+    this.handleButtonClick = handleButtonClick.bind(this)
+    this.handleItemDelete = handleItemDelete.bind(this)
     store.subscribe(this.handleStoreChange)
   }
 
-  handleInputChange (e) {
-    const action = {
-      type: CHNAGE_INPUT_VALUE,
-      value: e.target.value
-    }
-    store.dispatch(action)
-  }
-
-  handleStoreChange () {
+  handleStoreChange = () => {
     this.setState(store.getState())
   }
 
-  handleButtonClick () {
-    const action = {
-      type: ADD_TODO_ITEM
-    }
-    store.dispatch(action)
-  }
+// 使用redux-thunk：
+  // getTodoList = () => {
+  //   return (dispatch) => {
+  //     // 获取数据
+  //     axios.get('https://www.fastmock.site/mock/9bb3d7842201f4a8971a5d62847340bb/api/list').then((res) => {
+  //       if (res.data.code === 200) {
+  //         const data = res.data.data
+  //         const action = this.initListAction(data)
+  //         dispatch(action)
+  //       }
+  //     })
+  //   }
+  // }
 
-  handleItemDelete (index) {
-    const action = {
-      type: DELETE_TPDO_ITEM,
-      index
-    }
-    store.dispatch(action)
-  }
-
-  initListAction (data) {
+// 使用redux-saga：
+  getInitList = (data) => {
     return {
-      type: Init_List_Action,
+      type: GET_INIT_LIST,
       data
-    }
-    // store.dispatch(action)
-  }
-
-  getTodoList = () => {
-    return (dispatch) => {
-      // 获取数据
-      axios.get('https://www.fastmock.site/mock/9bb3d7842201f4a8971a5d62847340bb/api/list').then((res) => {
-        if (res.data.code === 200) {
-          const data = res.data.data
-          const action = this.initListAction(data)
-          dispatch(action)
-        }
-      })
     }
   }
 
@@ -77,6 +57,7 @@ class TodoList extends Component {
   }
 
   componentDidMount () {
+// 1、不使用中间件
     // axios.get('https://www.fastmock.site/mock/9bb3d7842201f4a8971a5d62847340bb/api/list').then((res) => {
     //   if (res.data.code === 200) {
     //     const data = res.data.data
@@ -84,7 +65,11 @@ class TodoList extends Component {
     //     store.dispatch(action)
     //   }
     // })
-    const action = this.getTodoList()
+// 2、使用redux-thunk中间件
+    // const action = this.getTodoList()
+    // store.dispatch(action)
+// 3、使用redux-saga中间件
+    const action = this.getInitList()
     store.dispatch(action)
   }
 }
