@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import 'antd/dist/antd.css'
 import store from './store/index'
-import { CHNAGE_INPUT_VALUE, ADD_TODO_ITEM, DELETE_TPDO_ITEM } from './store/actionTypes'
+import { CHNAGE_INPUT_VALUE, ADD_TODO_ITEM, DELETE_TPDO_ITEM, Init_List_Action } from './store/actionTypes'
 import TodoListUI from './TodoListUI';
+import axios from 'axios'
 
 class TodoList extends Component {
   constructor(props) {
@@ -42,6 +43,13 @@ class TodoList extends Component {
     store.dispatch(action)
   }
 
+  initListAction (data) {
+    return {
+      type: Init_List_Action,
+      data
+    }
+    // store.dispatch(action)
+  }
 
   render () {
     return (
@@ -53,6 +61,16 @@ class TodoList extends Component {
         handleItemDelete={this.handleItemDelete}
       />
     )
+  }
+
+  componentDidMount () {
+    axios.get('https://www.fastmock.site/mock/9bb3d7842201f4a8971a5d62847340bb/api/list').then((res) => {
+      if (res.data.code === 200) {
+        const data = res.data.data
+        const action = this.initListAction(data)
+        store.dispatch(action)
+      }
+    })
   }
 }
 
